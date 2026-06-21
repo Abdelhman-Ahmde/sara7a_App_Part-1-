@@ -15,6 +15,7 @@ export const findOne = async ({
     }
     return await doc.exec();
 };
+
 export const findById = async ({
     model,
     select = "",
@@ -29,6 +30,7 @@ export const findById = async ({
     }
     return await doc.exec();
 };
+
 export const find = async ({
     model,
     select = "",
@@ -52,6 +54,7 @@ export const find = async ({
     }
     return await doc.exec();
 };
+
 export const create = async ({
     model,
     data = [],
@@ -59,11 +62,13 @@ export const create = async ({
     const [doc] = (await model.create([data], options) || []);
     return doc;
 };
+
 export const insertMany = async ({
     model,
     data }) => {
     return await model.insertMany(data);
 };
+
 export const updateOne = async ({
     model,
     filter = {},
@@ -71,6 +76,7 @@ export const updateOne = async ({
     options }) => {
     return await model.updateOne(filter, { ...update, $inc: { __v: 1 } }, options);
 };
+
 export const findOneAndUpdate = async ({
     model,
     filter = {},
@@ -78,6 +84,7 @@ export const findOneAndUpdate = async ({
     options = { new: true, runValidators: true } }) => {
     return await model.findOneAndUpdate(filter, { ...update, $inc: { __v: 1 } }, options);
 };
+
 export const findByIdAndUpdate = async ({
     model,
     id,
@@ -85,24 +92,29 @@ export const findByIdAndUpdate = async ({
     options = { new: true, runValidators: true } }) => {
     return await model.findByIdAndUpdate(id, { ...update, $inc: { __v: 1 } }, options);
 };
+
 export const deleteOne = async ({
     model,
     filter = {} }) => {
     return await model.deleteOne(filter);
 };
+
 export const findByIdAndDelete = async ({
     model,
     id,
     options = { new: true, runValidators: true } }) => {
     return await model.findByIdAndDelete(id, options);
 };
+
 export const deleteMany = async ({
     model,
     filter = {} }) => {
     return await model.deleteMany(filter);
 };
+
 export const findOneAndDelete = async ({
     model,
     filter = {} }) => {
     return await model.findOneAndDelete(filter);
 };
+

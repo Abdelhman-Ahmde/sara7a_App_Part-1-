@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 import { DB_URL } from "../../config/config.service.js";
 
+
 const connectDB = async () => {
     try {
+        // الاستماع لحدث الاتصال بقاعدة البيانات لتأكيد نجاح العملية
         mongoose.connection.on("connected", () => {
             console.log("Connected to MongoDB");
         });
-        mongoose.connect(DB_URL,{
+
+        // محاولة الاتصال الفعلي مع تحديد مهلة زمنية للاتصال بالخادم
+        await mongoose.connect(DB_URL, {
             serverSelectionTimeoutMS: 5000
         })
     } catch (error) {

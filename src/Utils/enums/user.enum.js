@@ -1,13 +1,30 @@
+// تحديد جنس المستخدم
 export const genderEnum = {
-    MALE: 0,
-    FEMALE: 1,
+    Male: 0,
+    Female: 1,
 }
+// تحديد دور الشخص في المنصة لتطبيق الصلاحيات
 export const roleEnum = {
-    ADMIN: 0,
-    USER: 1,
+    Admin: 0,
+    User: 1,
 }
+// تحديد مستوى التوقيع (Signature) المناسب لنوع الحساب
+export const signatureEnum = {
+    Admin: 0,
+    User: 1,
+}
+// تحديد نوع التوكن
+export const tokenTypeEnum = {
+    Access: 0,
+    Refresh: 1,
+}
+// تحديد طريقة إنشاء الحساب، هل هو حساب من النظام أم من طرف خارجي
 export const providerEnum = {
     System: 0,
     Google: 1,
-    Facebook: 2,
+}
+// تحديد حالة المستخدم
+export const logoutTypeEnum = {
+    Logout: "Logout",
+    LogoutAll: "LogoutFromAllDevices",
 }

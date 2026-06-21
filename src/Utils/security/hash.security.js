@@ -2,13 +2,14 @@ import { hash, compare } from "bcrypt";
 import * as argon2 from "argon2";
 import { SALT } from "../../../config/config.service.js";
 import { HashEnum } from "../enums/security.enum.js";
-
+
 export const generateHash = async ({
     plainText,
     salt = SALT,
     algo = HashEnum.BCRYPT,
 }) => {
     let hashResult = "";
+    // توجيه العملية بناءً على الخوارزمية المطلوبة
     switch (algo) {
         case HashEnum.BCRYPT:
             hashResult = await hash(plainText, salt);
@@ -22,7 +23,7 @@ export const generateHash = async ({
     }
     return hashResult;
 }
-
+
 export const compareHash = async ({
     plainText,
     cipherText,
@@ -42,3 +43,4 @@ export const compareHash = async ({
     }
     return match;
 }
+

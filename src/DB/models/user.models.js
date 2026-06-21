@@ -17,39 +17,46 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: [true, "email is required"]
     },
     password: {
         type: String,
+        // يتم طلب كلمة المرور إجبارياً فقط إذا كان المستخدم يسجل عبر النظام (وليس عبر مزود خارجي مثل Google)
         required: function () {
-            return this.provider === providerEnum.System;
+            return this.provider == providerEnum.System;
         },
     },
     DOB: Date,
+    age: Number,
     phone: String,
     gender: {
         type: Number,
         enum: Object.values(genderEnum),
-        default: genderEnum.MALE
+        default: genderEnum.Male
     },
     role: {
         type: Number,
         enum: Object.values(roleEnum),
-        default: roleEnum.USER
+        default: roleEnum.User
     },
     provider: {
         type: Number,
         enum: Object.values(providerEnum),
         default: providerEnum.System
     },
+    changeCredentialTime: Date,
     confirmEmail: Date,
     profileImage: String,
+    coverImages: [String],
 
 }, {
     timestamps: true,
+    // إتاحة الحقول الافتراضية (Virtuals) عند تحويل المستند إلى JSON أو Object
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 })
+
 
 userSchema.virtual("fullName").set(function (value) {
     const [firstName, lastName] = value?.split(" ") || [];

@@ -1,15 +1,40 @@
-import * as dbService from "../../DB/database.repositry.js";
-import { successResponse } from "../../Utils/response/succes.response.js";
-import { NotFoundException } from "../../Utils/response/error.response.js";
 import { decrypt } from "../../Utils/security/encryption.security.js";
+import { successResponse } from "../../Utils/response/succes.response.js";
+import { BadRequestException } from "../../Utils/response/error.response.js";
+import { findByIdAndUpdate } from "../../DB/database.repositry.js";
 import UserModel from "../../DB/models/user.models.js";
 
 export const getProfile = async (req, res) => {
-    const { id } = req.params;
-    const user = await dbService.findById({ model: UserModel, id: id })
-    if (user) {
-        user.phone = await decrypt({ encryptedData: user.phone })
-    }
-    if (!user) throw NotFoundException({ message: "User Not Found" })
-    return successResponse({ res, data: { user }, message: "Done", statusCode: 200 })
+    let { phone } = req.user;
+    phone = await decrypt({ encryptedData: phone });
+    req.user.phone = phone;
+    return successResponse({ res, data: req.user, message: "Done", statusCode: 200 })
+}
+
+export const updateProfileImage = async (req, res) => {
+    const user = await findByIdAndUpdate({ model: UserModel, id: req.user._id, update: { profileImage: req.file.fieldname } });
+    const { file } = req;
+    if (!file) throw new BadRequestException("File is required");
+    return successResponse({
+        res,
+        data: { user },
+        message: "File uploaded successfully",
+        statusCode: 200
+    })
+}
+
+export const updateCoverImages = async (req, res) => {
+    const user = await findByIdAndUpdate({
+        model: UserModel,
+        id: req.user._id,
+        update: { coverImages: req.files?.map((file) => file.fieldname) }
+    });
+    const { files } = req;
+    if (!files) throw new BadRequestException("File is required");
+    return successResponse({
+        res,
+        data: { user },
+        message: "File uploaded successfully",
+        statusCode: 200
+    })
 }
